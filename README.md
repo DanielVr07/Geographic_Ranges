@@ -1,6 +1,8 @@
 # Estimating Geographic Ranges in Freshwater Species
 
-R code for the analyses from "Comparing methods for estimating geographic ranges in freshwater fishes: several mirrors of the same reality" by Valencia-Rodríguez et al. 2024. Freshwater Biology. R code to replicate all data treatment and analyses from the paper
+R code for the analyses from "Comparing methods for estimating geographic ranges in freshwater fishes: several mirrors of the same reality" by Valencia-Rodríguez et al. 2024. Freshwater Biology. 
+
+R code to replicate all data treatment and analyses from the paper
 
 ## File description:
 
@@ -8,7 +10,7 @@ R code for the analyses from "Comparing methods for estimating geographic ranges
 
 **R_Codes:** This folder contains three documents code.
 
-**1. Extents of occurrence (EOO), is composed of five sections:**
+**1. Extents of occurrence (EOO), are composed of five sections:**
 
 1.1. Optimal alpha value: This section calculates the optimal alpha value for the species automatically and adaptively, based on the density and distribution of the species' occurrence records.
 
@@ -20,7 +22,7 @@ R code for the analyses from "Comparing methods for estimating geographic ranges
 
 1.5 Expert maps: This section, expert maps available from the IUCN website are used to calculate range sizes, both unrestricted and restricted to water bodies.
 
-**2. Species Distribution Models (SDMs) is composed of six sections:**
+**2. Species Distribution Models (SDMs) are composed of six sections:**
 
 2.1. Occurrence records: This section splits the occurrence data randomly for each species into training and validation sets.
 
@@ -34,7 +36,7 @@ R code for the analyses from "Comparing methods for estimating geographic ranges
 
 2.6. Reclassification of the models: This section reclassifies the continuous models into binary models using the 10th percentile training presence value as the threshold.
 
-**3. Analyses, is composed of three sections:**
+**3. Analyses and figures, are composed of three sections:**
 
 3.1. Comparison of range sizes between methods: This section compares the differences in estimated restricted geographic range sizes between methods.
 
