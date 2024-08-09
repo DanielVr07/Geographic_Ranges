@@ -1,6 +1,6 @@
 # Estimating Geographic Ranges in Freshwater Species
 
-R code for the analyses from "Comparing methods for estimating geographic ranges in freshwater fishes: several mirrors of the same reality" by Valencia-Rodríguez et al. 2024. Freshwater Biology. 
+R code for the analyses from "Comparing methods for estimating geographic ranges in freshwater fishes: several mirrors of the same reality" by Valencia-Rodríguez et al. 2024. Freshwater Biology.
 
 R code to replicate all data treatment and analyses from the paper
 
@@ -59,4 +59,5 @@ Domisch, S., Amatulli, G., & Jetz, W. (2015). Near-global freshwater-specific en
 Lehner, B., & Grill, G. (2013). Global river hydrography and network routing: Baseline data and new approaches to study the world's large river systems. Hydrological Processes, 27(15), 2171--2186. <https://doi.org/10.1002/hyp.9740>
 
 ## Contact
-davarod@gmail.com fabricio.villalobos@gmail.com octavio.rojas@inecol.mx
+
+[davarod\@gmail.com](mailto:davarod@gmail.com){.email} [fabricio.villalobos\@gmail.com](mailto:fabricio.villalobos@gmail.com){.email} [octavio.rojas\@inecol.mx](mailto:octavio.rojas@inecol.mx){.email}
