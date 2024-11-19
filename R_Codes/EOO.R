@@ -28,16 +28,16 @@ data_ocurr <- read_csv("curimatidae_occ_2023.csv")
 
 # Selecting species with 20 or more occurrence records
 spp_counts <- data_ocurr %>% 
-  group_by(fishbase) %>% # Column with the name of the species
+  group_by(species) %>% # Column with the name of the species
   summarise(records = n()) %>%
   filter(records >= 19)
 # Filter the original data to include only species with at least 20 records
 filter_data <- data_ocurr %>% 
-  filter(fishbase %in% spp_counts$fishbase)
+  filter(species %in% spp_counts$species)
 # Create the final list and assign names to each item
 spp.list <- filter_data %>% 
-  group_split(fishbase) %>%
-  setNames(spp_counts$fishbase)
+  group_split(species) %>%
+  setNames(spp_counts$species)
 
 # Errors might occur if the occurrences are too close geographically or if two or more records share 
 # the same value on the longitude or latitude. Therefore, we adjust the decimal points of the longitude 
@@ -286,7 +286,7 @@ for (i in 1:length(spp.list)) {
   print(i)
 # Transform tables into sf objects and add attributes to spatial object
   spp.list.convex <- spp.list[[i]] %>%
-    select("longitude", "latitude", "fishbase") %>%
+    select("longitude", "latitude", "species") %>%
     hsi::clean_dup(longitude="longitude",latitude="latitude",threshold=0.041665) %>%
     st_as_sf(coords=c('longitude', 'latitude'), crs="EPSG: 4326")
 # Draw convex hull
@@ -379,13 +379,13 @@ write.csv(expert_map_areas, file = ".")
 
 ### Join the tables containing the numerical values for the restricted and unrestricted ranges of the water bodies
 ranges_hulls <- spp_counts %>%
-  left_join(results_dym, by = c("fishbase" = "spp")) %>%
-  left_join(areas_alpha, by = c("fishbase" = "species")) %>%
-  left_join(static.range, by = c("fishbase" = "species")) %>% 
-  left_join(areas_convex, by = c("fishbase" = "species")) %>% 
-  left_join(expert_map_areas, by = c("fishbase" = "species")) %>% 
+  left_join(results_dym, by = c("species" = "spp")) %>%
+  left_join(areas_alpha, by = c("species" = "species")) %>%
+  left_join(static.range, by = c("species" = "species")) %>% 
+  left_join(areas_convex, by = c("species" = "species")) %>% 
+  left_join(expert_map_areas, by = c("species" = "species")) %>% 
   select(-ID.x, -ID.y, -ID.x.x, -ID.y.y) %>% 
-  rename(Species=fishbase,'Number of occurrence records'=records, 'Alpha value'=alpha,
+  rename(Species=species,'Number of occurrence records'=records, 'Alpha value'=alpha,
     Convex=area.chull, Convex_network=area.chull.rest, Static=range.static, 
     Static_network=range.static.rest, Dynamic=area.alpha.dym,
     Dynamic_network=area.alpha.dym.rest, Expert=area_exp_map, Expert_network=area_exp_map_rest)
