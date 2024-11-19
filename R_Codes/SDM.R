@@ -29,12 +29,15 @@ data_ocurr <- read_csv ("curimatidae_occ_2023.csv")
 # sp_joint: contains all the complete records
 
 # Create folders and files for each species
-for (i in unique(data_ocurr$specie)) {
+for (i in unique(data_ocurr$species)) {
   # Create a folder in the directory for each species
   dir.create(paste0("models/", i, "/"), recursive = TRUE)
   
   # Filter the occurrence data for the current species
-  data_joint <- data_ocurr[data_ocurr$specie == i, c("specie", "longitude", "latitude")]
+  data_joint <- data_ocurr %>%
+    filter(species == i) %>%
+    select(species, longitude, latitude) %>%
+    rename(specie = species)
   
   # Split the data into training and testing sets
   samples <- sample(2, nrow(data_joint), replace = TRUE, prob = c(0.8, 0.2))
