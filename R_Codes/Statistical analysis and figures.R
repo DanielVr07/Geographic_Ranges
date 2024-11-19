@@ -26,8 +26,7 @@ data <- read_csv("ranges_size.csv")
 
 # Select only the columns with methods to evaluate range sizes restricted to water bodies
 ranges <- data %>% select(Convex_network,Static_network,Dynamic_network,Expert_network,SDM) %>% 
-  rename(Convex=Convex_network, Static=Static_network, Dynamic=Dynamic_network,
-    Expert=Expert_network)
+  rename(Convex=Convex_network, Static=Static_network, Dynamic=Dynamic_network, Expert=Expert_network)
 
 ## Kolmogorov-Smirnov (KS) test to compare range sizes estimated by each pair of methods
 
@@ -57,15 +56,15 @@ ks_results_df$Sample_Size <- as.numeric(as.character(ks_results_df$Sample_Size))
 # Print the results
 print(ks_results_df)
 
-## Note: The "ks_results_df" object will be used after constructing FIGURE 2 to generate Tables S3 ##
+## Note: The "ks_results_df" object will be used after constructing FIGURE 3 to generate Tables S3 ##
 
-### FIGURE 2 ###
+### FIGURE 3 ###
 
 # Convex hull
 hull <- ggplot(ranges, aes(Convex/100000)) +
   geom_histogram(fill="grey80", color="black", bins=20) +
   labs(x = expression("Species range size"), y="Number of species") +
-  scale_y_continuous(limits=c(0, 40), breaks=seq(0, 40, by=5), expand=c(0,0)) +
+  scale_y_continuous(limits=c(0, 45), breaks=seq(0, 45, by=5), expand=c(0,0)) +
   scale_x_continuous(breaks=seq(0, 12, by=2), expand=c(0,0))+
   theme_classic() +
   theme(text = element_text(size=18),
@@ -79,7 +78,7 @@ hull <- ggplot(ranges, aes(Convex/100000)) +
 static <- ggplot(ranges, aes(Static/100000)) +
   geom_histogram(fill="grey80", color="black", bins=20) +
   labs(x = expression("Species range size"), y="") +
-  scale_y_continuous(limits=c(0, 40), breaks=seq(0, 40, by=5), expand=c(0,0)) +
+  scale_y_continuous(limits=c(0, 45), breaks=seq(0, 45, by=5), expand=c(0,0)) +
   scale_x_continuous(breaks=seq(0, 12, by=2), expand=c(0,0)) +
   theme_classic() +
   theme(text=element_text(size=18),
@@ -93,7 +92,7 @@ static <- ggplot(ranges, aes(Static/100000)) +
 dynamic <- ggplot(ranges, aes(Dynamic/100000)) +
   geom_histogram(fill="grey80", color="black", bins=20) +
   labs(x = expression("Species range size"), y="") +
-  scale_y_continuous(limits=c(0, 40), breaks=seq(0, 40, by=5), expand=c(0,0)) +
+  scale_y_continuous(limits=c(0, 45), breaks=seq(0, 45, by=5), expand=c(0,0)) +
   scale_x_continuous(breaks=seq(0, 12, by=2), expand=c(0,0)) +
   theme_classic() +
   theme(text=element_text(size=18),
@@ -107,7 +106,7 @@ dynamic <- ggplot(ranges, aes(Dynamic/100000)) +
 expert <- ggplot(ranges, aes(Expert/100000)) +
   geom_histogram(fill="grey80", color="black", bins=20) +
   labs(x = expression("Species range size"), y="") +
-  scale_y_continuous(limits=c(0, 40), breaks=seq(0, 40, by=5), expand=c(0,0)) +
+  scale_y_continuous(limits=c(0, 45), breaks=seq(0, 45, by=5), expand=c(0,0)) +
   scale_x_continuous(breaks=seq(0, 12, by=1), expand=c(0,0)) +
   theme_classic() +
   theme(text = element_text(size = 18),
@@ -117,11 +116,11 @@ expert <- ggplot(ranges, aes(Expert/100000)) +
         plot.title=element_text(hjust=0.5, size=16))+
   ggtitle("Expert map")
 
-# SDM
+# Species Distribution Model (SDM)
 sdm <- ggplot(ranges, aes(SDM/100000)) +
   geom_histogram(fill="grey80", color="black", bins=20) +
   labs(x = expression("Species range size"), y="") +
-  scale_y_continuous(limits=c(0, 40), breaks=seq(0, 40, by=5), expand=c(0,0)) +
+  scale_y_continuous(limits=c(0, 45), breaks=seq(0, 45, by=5), expand=c(0,0)) +
   scale_x_continuous(breaks=seq(0, 12, by=2), expand=c(0,0)) +
   theme_classic() +
   theme(text=element_text(size = 18),
@@ -129,17 +128,17 @@ sdm <- ggplot(ranges, aes(SDM/100000)) +
         axis.text=element_text(color="black", size=16),
         axis.title=element_text(color="black"),
         plot.title=element_text(hjust=0.5, size=16))+
-  ggtitle("SDM")
+  ggtitle("Species Distribution Model")
 
 # Combine images into a single figure and export
-group.fig.2 <- hull | static | dynamic | expert | sdm
-plot_layout(widths = c(1, 1))
+group.fig.3 <- wrap_elements(hull) | wrap_elements(static) | wrap_elements(dynamic) | 
+  wrap_elements(expert) | wrap_elements(sdm)
 
-Fig.2 <- group.fig.2 + theme(plot.margin = margin(1, 1, 1, 1)) # Adjust margins
+Fig.3 <- group.fig.3 + theme(plot.margin = margin(1, 1, 1, 1)) # Adjust margins
 
 # Save figure
-ggsave(Fig.2, filename = "Fig_2.tiff", width = 18, height = 7,
-       units ="cm", scale = 2, dpi = 400)
+ggsave(Fig.3, filename="Fig_3.tiff", width=18, height=7,
+       units="cm", scale=2, dpi=400)
 
 
 ### Table S3 ### 
@@ -255,7 +254,7 @@ results_df <- do.call(rbind, lapply(names(results_list), function(method) {
   data.frame(Method=method, P_Value=results_list[[method]]$p.value, W=results_list[[method]]$W)}))
 
 
-### FIGURE 3 ###
+### FIGURE 4 ###
 
 orden_nom <- c("Convex hull", "Static alpha", "Dynamic alpha", "Expert map", "SDM")
 df$Method <- factor(df$Method, levels = orden_nom)
@@ -264,7 +263,7 @@ df$Shape <- factor(df$Shape, levels = c("Polygon", "Water bodies"))
 # Filter out SDM rows
 df_filtered <- df %>% filter(Method != "SDM")
 
-Fig.3 <- 
+Fig.4 <- 
   ggplot(df_filtered, aes(x = Method, y = Value / 100000, fill = Shape)) +
   geom_boxplot() +
   scale_fill_manual(values=c("#E69F00", "#999999"))+
@@ -279,7 +278,7 @@ Fig.3 <-
         axis.text = element_text(color = "black", size = 16))
 
 # Save figure
-ggsave(Fig.3, filename = "Fig_3.tiff", width = 18, height = 7,
+ggsave(Fig.4, filename = "Fig_4.tiff", width = 18, height = 7,
        units ="cm", scale = 2, dpi = 400)
 
 #-----------------------------------------------------------------------------#
@@ -352,13 +351,13 @@ lm_results_df <- lm_results_df %>% select(-Method2)
 # Print the results
 print(lm_results_df)
 
-# Save the results table (Table S3)
+# Save the results table (Table S4)
 write.csv(lm_results_df, "Table_S4.csv", row.names = FALSE)
 
 
-### FIGURE 4 ###
+### FIGURE 5 ###
 
-# Define a general theme for all the plots (Figure 4)
+# Define a general theme for all the plots (Figure 5)
 mytheme <- theme(text=element_text(family='Calibri'),
                  axis.text.y=element_text(colour="black", size=11, face="plain"), 
                  axis.text.x=element_text(colour="black", face="plain", size=11),
@@ -374,92 +373,85 @@ mytheme <- theme(text=element_text(family='Calibri'),
 hull.static <- 
   ggplot(ranges, aes(x=ranges$Static/100000, y=ranges$Convex/100000)) +
   geom_point(color="gray60", size=1.5) +
-  geom_smooth(method="lm",formula=y~x,se=FALSE,linetype="dashed",color="red",linewidth=1) +
-  geom_abline(slope = 1, intercept = 0, color = "grey", linewidth=0.2) +
-  labs(x = expression("Static alpha"), y = "Convex hull") +
-  scale_x_continuous(limits=c(0, 12), breaks=seq(0, 12, by=2), expand=c(0,0)) +
-  scale_y_continuous(limits=c(0, 12), breaks=seq(0, 12, by=2), expand=c(0,0)) +
+  geom_smooth(method="lm", formula=y~x, se=FALSE, linetype="dashed", color="red", linewidth=1) +
+  geom_abline(slope=1, intercept=0, color="grey", linewidth=0.2) +
+  labs(x=expression("Static alpha"), y="Convex hull") +
+  scale_x_continuous(limits=c(0, 12), breaks=seq(0, 12, by=3), expand=c(0,0)) +
+  scale_y_continuous(limits=c(0, 12), breaks=seq(0, 12, by=3), expand=c(0,0)) +
   mytheme+
-  annotate("text", x=3.6, y=11, 
-           label=expression(paste(italic(R)^2,"=","0.93")), size=3, hjust=1)
+  annotate("text", x=3.6, y=11, label=expression(paste(italic(R)^2,"=","0.93")), size=3, hjust=1)
 
 # Convex hull ~ Dynamic 
 hull.dynamic <- 
   ggplot(ranges,aes(x=ranges$Dynamic/100000, y=ranges$Convex/100000))+
   geom_point(color="gray60", size=1.5) +
-  geom_smooth(method="lm",formula=y~x,se=FALSE,linetype="dashed",color="red",linewidth=1)+
-  geom_abline(slope = 1, intercept = 0, color = "grey", linewidth=0.2) +
-  labs(x = expression("Dynamic alpha"),y = "Convex hull") +
-  scale_x_continuous(limits=c(0, 12), breaks=seq(0, 12, by=2), expand=c(0,0)) +
-  scale_y_continuous(limits=c(0, 12), breaks=seq(0, 12, by=2), expand=c(0,0)) +
+  geom_smooth(method="lm", formula=y~x, se=FALSE, linetype="dashed", color="red", linewidth=1)+
+  geom_abline(slope=1, intercept=0, color="grey", linewidth=0.2) +
+  labs(x=expression("Dynamic alpha"), y="Convex hull") +
+  scale_x_continuous(limits=c(0, 12), breaks=seq(0, 12, by=3), expand=c(0,0)) +
+  scale_y_continuous(limits=c(0, 12), breaks=seq(0, 12, by=3), expand=c(0,0)) +
   mytheme +
-  annotate("text", x=3.6, y=11, 
-           label=expression(paste(italic(R)^2,"=","0.95")), size=3, hjust=1)
+  annotate("text", x=3.6, y=11, label=expression(paste(italic(R)^2,"=","0.95")), size=3, hjust=1)
 
 # Convex hull ~ Expert
 hull.expert <-  
-  ggplot(ranges,aes(x= ranges$Expert/100000, y=ranges$Convex/100000))+
+  ggplot(ranges,aes(x=ranges$Expert/100000, y=ranges$Convex/100000))+
   geom_point(color="gray60", size=1.5) +
-  geom_smooth(method="lm",formula=y~x,se=FALSE,linetype="dashed",color="red",linewidth=1)+
+  geom_smooth(method="lm", formula=y~x, se=FALSE, linetype="dashed", color="red", linewidth=1)+
   geom_abline(slope=1, intercept=0, color="grey", linewidth=0.2) +
   labs(x=expression("Expert map"), y="Convex hull") +
-  scale_x_continuous(limits=c(0, 8), breaks=seq(0, 8, by=2), expand=c(0,0)) +
-  scale_y_continuous(limits=c(0, 8), breaks=seq(0, 8, by=2), expand=c(0,0)) +
+  scale_x_continuous(limits=c(0, 12), breaks=seq(0, 12, by=3), expand=c(0,0)) +
+  scale_y_continuous(limits=c(0, 12), breaks=seq(0, 12, by=3), expand=c(0,0)) +
   mytheme +
-  annotate("text", x=2.2, y=7.2, 
-           label=expression(paste(italic(R)^2,"=","0.30")), size=3, hjust=1)
+  annotate("text", x=3.6, y=11, label=expression(paste(italic(R)^2,"=","0.88")), size=3, hjust=1)
 
 # Static ~ Dynamic
 static.dynamic <-
   ggplot(ranges,aes(x=ranges$Dynamic/100000, y=ranges$Static/100000))+
   geom_point(color="gray60", size=1.5) +
-  geom_smooth(method="lm",formula=y~x,se=FALSE,linetype="dashed",color="red",linewidth=1)+
+  geom_smooth(method="lm", formula=y~x, se=FALSE, linetype="dashed", color="red", linewidth=1)+
   geom_abline(slope=1, intercept=0, color="grey", linewidth=0.2) +
   labs(x=expression("Dynamic alpha"), y="Static alpha") +
-  scale_x_continuous(limits=c(0, 10), breaks=seq(0, 10, by=2), expand=c(0,0)) +
-  scale_y_continuous(limits=c(0, 10), breaks=seq(0, 10, by=2), expand=c(0,0)) +
+  scale_x_continuous(limits=c(0, 12), breaks=seq(0, 12, by=3), expand=c(0,0)) +
+  scale_y_continuous(limits=c(0, 12), breaks=seq(0, 12, by=3), expand=c(0,0)) +
   mytheme +
-  annotate("text", x=3.2, y=9, 
-           label=expression(paste(italic(R)^2,"=","0.91")), size=3, hjust=1)
+  annotate("text", x=3.6, y=11, label=expression(paste(italic(R)^2,"=","0.91")), size=3, hjust=1)
 
 # Static ~ Expert
 static.expert <-
   ggplot(ranges,aes(x=ranges$Expert/100000, y=ranges$Static/100000))+
   geom_point(color="gray60", size=1.5) +
-  geom_smooth(method="lm",formula=y~x,se=FALSE,linetype="dashed", color="red",linewidth=1)+
+  geom_smooth(method="lm", formula=y~x, se=FALSE, linetype="dashed", color="red", linewidth=1)+
   geom_abline(slope=1, intercept=0, color="grey", linewidth=0.2) +
   labs(x=expression("Expert map"), y="Static alpha") +
-  scale_x_continuous(limits=c(0, 8), breaks=seq(0, 8, by=2), expand=c(0,0)) +
-  scale_y_continuous(limits=c(0, 8), breaks=seq(0, 8, by=2), expand=c(0,0)) +
+  scale_x_continuous(limits=c(0, 12), breaks=seq(0, 12, by=3), expand=c(0,0)) +
+  scale_y_continuous(limits=c(0, 12), breaks=seq(0, 12, by=3), expand=c(0,0)) +
   mytheme +
-  annotate("text", x=2.3, y=7.2, 
-           label=expression(paste(italic(R)^2,"=","0.34")), size=3, hjust=1)
+  annotate("text", x=3.6, y=11, label=expression(paste(italic(R)^2,"=","0.85")), size=3, hjust=1)
 
 # Dynamic ~ Expert
 dynamic.expert <- 
   ggplot(ranges,aes(x=ranges$Expert/100000, y=ranges$Dynamic/100000))+
   geom_point(color="gray60", size=1.5) +
-  geom_smooth(method="lm",formula=y~x,se=FALSE,linetype="dashed", color="red",linewidth=1)+
+  geom_smooth(method="lm", formula=y~x, se=FALSE, linetype="dashed", color="red", linewidth=1)+
   geom_abline(slope=1, intercept=0, color="grey", linewidth=0.2) +
   labs(x=expression("Expert map"), y ="Dynamic alpha") +
-  scale_x_continuous(limits=c(0, 4), breaks=seq(0, 4, by=1), expand=c(0,0)) +
-  scale_y_continuous(limits=c(0, 4), breaks=seq(0, 4, by=1), expand=c(0,0)) +
+  scale_x_continuous(limits=c(0, 12), breaks=seq(0, 12, by=3), expand=c(0,0)) +
+  scale_y_continuous(limits=c(0, 12), breaks=seq(0, 12, by=3), expand=c(0,0)) +
   mytheme +
-  annotate("text", x=1.1, y=3.6, 
-           label=expression(paste(italic(R)^2,"=","0.31")), size=3, hjust=1)
+  annotate("text", x=3.6, y=11, label=expression(paste(italic(R)^2,"=","0.81")), size=3, hjust=1)
 
 # Convex hull ~ SDM 
 hull.sdm <-
   ggplot(ranges,aes(x=ranges$SDM/100000, y=ranges$Convex/100000))+
   geom_point(color="gray60", size=1.5) +
-  geom_smooth(method="lm",formula=y~x,se=FALSE,linetype="dashed", color="red",linewidth=1)+
+  geom_smooth(method="lm", formula=y~x, se=FALSE, linetype="dashed", color="red", linewidth=1)+
   geom_abline(slope=1, intercept=0, color="grey", linewidth=0.2) +
   labs(x=expression("SDMs"), y="Convex hull") +
-  scale_x_continuous(limits=c(0, 12), breaks=seq(0, 12, by=2), expand=c(0,0)) +
-  scale_y_continuous(limits=c(0, 12), breaks=seq(0, 12, by=2), expand=c(0,0)) +
+  scale_x_continuous(limits=c(0, 12), breaks=seq(0, 12, by=3), expand=c(0,0)) +
+  scale_y_continuous(limits=c(0, 12), breaks=seq(0, 12, by=3), expand=c(0,0)) +
   mytheme +
-  annotate("text", x=3.6, y=11, 
-           label=expression(paste(italic(R)^2,"=","0.76")), size=3, hjust=1)
+  annotate("text", x=3.6, y=11, label=expression(paste(italic(R)^2,"=","0.76")), size=3, hjust=1)
 
 # Static ~ SDM
 static.sdm <-
@@ -468,11 +460,10 @@ static.sdm <-
   geom_smooth(method="lm",formula=y~x,se=FALSE,linetype="dashed", color="red",linewidth=1)+
   geom_abline(slope=1, intercept=0, color="grey", linewidth=0.2) +
   labs(x=expression("SDMs"), y="Static alpha") +
-  scale_x_continuous(limits=c(0, 10), breaks=seq(0, 10, by=2), expand=c(0,0)) +
-  scale_y_continuous(limits=c(0, 10), breaks=seq(0, 10, by=2), expand=c(0,0)) +
+  scale_x_continuous(limits=c(0, 12), breaks=seq(0, 12, by=3), expand=c(0,0)) +
+  scale_y_continuous(limits=c(0, 12), breaks=seq(0, 12, by=3), expand=c(0,0)) +
   mytheme +
-  annotate("text", x=3.1, y=9, 
-           label=expression(paste(italic(R)^2,"=","0.73")), size=3, hjust=1)
+  annotate("text", x=3.6, y=11, label=expression(paste(italic(R)^2,"=","0.73")), size=3, hjust=1)
 
 # Dynamic ~ SDM
 dynamic.sdm <-
@@ -481,11 +472,10 @@ dynamic.sdm <-
   geom_smooth(method="lm",formula=y~x,se=FALSE,linetype="dashed", color="red",linewidth=1)+
   geom_abline(slope=1, intercept=0, color="grey", linewidth=0.2) +
   labs(x=expression("SDMs"), y ="Dynamic alpha") +
-  scale_x_continuous(limits=c(0, 10), breaks=seq(0, 10, by=2), expand=c(0,0)) +
-  scale_y_continuous(limits=c(0, 10), breaks=seq(0, 10, by=2), expand=c(0,0)) +
+  scale_x_continuous(limits=c(0, 12), breaks=seq(0, 12, by=3), expand=c(0,0)) +
+  scale_y_continuous(limits=c(0, 12), breaks=seq(0, 12, by=3), expand=c(0,0)) +
   mytheme +
-  annotate("text", x=3.1, y=9, 
-           label=expression(paste(italic(R)^2,"=","0.68")), size=3, hjust=1)
+  annotate("text", x=3.6, y=11, label=expression(paste(italic(R)^2,"=","0.68")), size=3, hjust=1)
 
 # SDM ~ Expert
 sdm.expert <-
@@ -494,18 +484,17 @@ sdm.expert <-
   geom_smooth(method="lm",formula=y~x,se=FALSE,linetype="dashed", color="red",linewidth=1)+
   geom_abline(slope=1, intercept=0, color="grey", linewidth=0.2) +
   labs(x=expression("Expert map"), y="SDMs") +
-  scale_x_continuous(limits=c(0, 8), breaks=seq(0, 8, by=2), expand=c(0,0)) +
-  scale_y_continuous(limits=c(0, 8), breaks=seq(0, 8, by=2), expand=c(0,0)) +
+  scale_x_continuous(limits=c(0, 12), breaks=seq(0, 12, by=3), expand=c(0,0)) +
+  scale_y_continuous(limits=c(0, 12), breaks=seq(0, 12, by=3), expand=c(0,0)) +
   mytheme +
-  annotate("text", x=2.3, y=7.2, 
-           label=expression(paste(italic(R)^2,"=","0.35")), size=3, hjust=1)
+  annotate("text", x=3.6, y=11, label=expression(paste(italic(R)^2,"=","0.72")), size=3, hjust=1)
 
 # Combine all the plots into a grid
-Fig.4 <- grid.arrange(hull.static, hull.dynamic, hull.expert, hull.sdm, static.expert, 
+Fig.5 <- grid.arrange(hull.static, hull.dynamic, hull.expert, hull.sdm, static.expert, 
                      static.dynamic, static.sdm, dynamic.sdm, dynamic.expert, sdm.expert, 
                      ncol=3, nrow=4, layout_matrix=rbind(c(1, 2, 3), c(4, 5, 6),
                                                          c(7, 8, 9), c(NA, 10, NA)))
 
 # Save figure
-ggsave(Fig.4, filename = "Fig_4.tiff", width = 18, height = 18,
-       units ="cm", scale = 1, dpi = 400)
+ggsave(Fig.5, filename="Fig_5.tiff", width=18, height=18,
+       units="cm", scale=1, dpi=400)
