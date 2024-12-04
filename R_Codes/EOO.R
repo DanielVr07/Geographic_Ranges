@@ -45,7 +45,7 @@ spp.list <- filter_data %>%
 spp.list.2 <- list()
 for (i in 1:length(spp.list)) {
   spp.list.2[[i]] <- spp.list[[i]] %>%
-    select("longitude", "latitude") %>%
+    dplyr::select("longitude", "latitude") %>%
     mutate(longitude=ifelse(duplicated(spp.list[[i]]$longitude), longitude + rnorm(1, mean = 0, sd = 0.0001), longitude)) %>%
     mutate(latitude=ifelse(duplicated(spp.list[[i]]$latitude), latitude+rnorm(1, mean=0, sd=0.0001), latitude)) %>%  
     hsi::clean_dup(longitude = "longitude", latitude = "latitude", threshold = 0.041665)
