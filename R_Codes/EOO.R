@@ -286,7 +286,7 @@ for (i in 1:length(spp.list)) {
   print(i)
 # Transform tables into sf objects and add attributes to spatial object
   spp.list.convex <- spp.list[[i]] %>%
-    select("longitude", "latitude", "species") %>%
+    dplyr::select("longitude", "latitude", "species") %>%
     hsi::clean_dup(longitude="longitude",latitude="latitude",threshold=0.041665) %>%
     st_as_sf(coords=c('longitude', 'latitude'), crs="EPSG: 4326")
 # Draw convex hull
