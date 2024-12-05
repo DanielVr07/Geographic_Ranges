@@ -227,7 +227,7 @@ for(i in 1:length(maxent.models)){
   threshold <- 5
   rand_percent <- 50
   iterations <- 500
-  kept <- FALSE
+  kept <- TRUE
   selection <- "OR_AICc"
   paral_proc <- FALSE 
   
