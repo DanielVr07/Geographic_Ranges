@@ -325,7 +325,7 @@ for (i in 1:length(tab.mods[,1])){
 }
 
 # Save table with results
-write.csv(tabla.var.bin, "Eval_SDM.csv", row.names = FALSE)
+write.csv(table.var.bin, "Eval_SDM.csv", row.names = FALSE)
 
 #-------------------------------------------------------#
 ####        2.6 Reclassification of the models       ####
