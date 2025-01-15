@@ -298,7 +298,7 @@ library(gridExtra)
 # which contains the range sizes of each method adjusted to water bodies
 
 # Define the methods to compare
-methods <- c("Convex", "Static", "Dynamic", "Expert", "SDM")
+methods <- c("Convex", "Static", "Dynamic", "SDM", "Expert")
 
 # Function to perform linear regressions between pairs of methods
 lm_test <- function(col1, col2, data) {
@@ -490,9 +490,9 @@ sdm.expert <-
   annotate("text", x=3.6, y=11, label=expression(paste(italic(R)^2,"=","0.72")), size=3, hjust=1)
 
 # Combine all the plots into a grid
-Fig.5 <- grid.arrange(hull.static, hull.dynamic, hull.expert, hull.sdm, static.expert, 
-                     static.dynamic, static.sdm, dynamic.sdm, dynamic.expert, sdm.expert, 
-                     ncol=3, nrow=4, layout_matrix=rbind(c(1, 2, 3), c(4, 5, 6),
+Fig.5 <- grid.arrange(hull.static, hull.dynamic, hull.expert, hull.sdm, static.dynamic,
+                      static.expert, static.sdm, dynamic.expert, dynamic.sdm, sdm.expert,
+                      ncol=3, nrow=4, layout_matrix=rbind(c(1, 2, 3), c(4, 5, 6),
                                                          c(7, 8, 9), c(NA, 10, NA)))
 
 # Save figure
