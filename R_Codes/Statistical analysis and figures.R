@@ -25,7 +25,7 @@ data <- read_csv("ranges_size.csv")
 ### Prepare the data for analysis ###
 
 # Select only the columns with methods to evaluate range sizes restricted to water bodies
-ranges <- data %>% select(Convex_network,Static_network,Dynamic_network,Expert_network,SDM) %>% 
+ranges <- data %>% select(Convex_network,Static_network,Dynamic_network,SDM,Expert_network) %>% 
   rename(Convex=Convex_network, Static=Static_network, Dynamic=Dynamic_network, Expert=Expert_network)
 
 ## Kolmogorov-Smirnov (KS) test to compare range sizes estimated by each pair of methods
@@ -145,7 +145,7 @@ ggsave(Fig.3, filename="Fig_3.tiff", width=18, height=7,
 
 ## Prepare the data for analysis
 # Convert the "ranges" object to long format
-data_long <- pivot_longer(ranges,cols=c(Convex,Static,Dynamic,Expert,SDM),
+data_long <- pivot_longer(ranges,cols=c(Convex,Static,Dynamic,SDM,Expert),
                           names_to="Method", values_to="RangeSize") %>%
   drop_na() # Remove rows with NA
 
