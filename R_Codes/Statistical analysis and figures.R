@@ -56,7 +56,7 @@ ks_results_df$Sample_Size <- as.numeric(as.character(ks_results_df$Sample_Size))
 # Print the results
 print(ks_results_df)
 
-## Note: The "ks_results_df" object will be used after constructing FIGURE 3 to generate Tables S3 ##
+## Note: The "ks_results_df" object will be used after constructing FIGURE 3 to generate Table 2 ##
 
 ### FIGURE 3 ###
 
@@ -141,7 +141,7 @@ ggsave(Fig.3, filename="Fig_3.tiff", width=18, height=7,
        units="cm", scale=2, dpi=400)
 
 
-### Table S3 ### 
+### Table 2 ### 
 
 ## Prepare the data for analysis
 # Convert the "ranges" object to long format
