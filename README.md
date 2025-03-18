@@ -1,6 +1,6 @@
 # Estimating Geographic Ranges in Freshwater Species
 
-This repository contains the necessary code and data to reproduce the analyses performed in Valencia-Rodríguez et al. "Comparing methods for estimating geographic ranges in freshwater fishes: several mirrors of the same reality" submitted to the journal Freshwater Biology.
+This repository contains the necessary code and data to reproduce the analyses performed in Valencia-Rodríguez et al. "Comparing methods for estimating geographic ranges in freshwater fishes: several mirrors of the same reality" Accepted in Freshwater Biology (https://doi.org/10.1111/fwb.70014)
 
 ## File description:
 
