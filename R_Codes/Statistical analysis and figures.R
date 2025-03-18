@@ -351,8 +351,8 @@ lm_results_df <- lm_results_df %>% select(-Method2)
 # Print the results
 print(lm_results_df)
 
-# Save the results table (Table S4)
-write.csv(lm_results_df, "Table_S4.csv", row.names = FALSE)
+# Save the results table (Table S3)
+write.csv(lm_results_df, "Table_S3.csv", row.names = FALSE)
 
 
 ### FIGURE 5 ###
